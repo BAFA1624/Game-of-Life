@@ -1,5 +1,6 @@
 #include "board.hpp"
 #include "rules.hpp"
+#include "structure_masks.hpp"
 
 #include <cstdint>
 #include <iostream>
@@ -46,20 +47,22 @@ main() {
     //    0, 0, 0, 0, 0, 0, 0, 0
     //};
 
-    std::array<bool, 64> init_blinker {
-        0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,
-        0,0,0,1,1,1,0,0,
-        0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0
-    };
-    // clang-format o
+    std::array<bool, 400> init { false };
+    // clang-format on
 
-    Board<8, 8, boundary::VOID, neighbourhood::MOORE> board{ init_blinker };
-    for ( int i{ 0 }; i < 10; ++i ) {
+    // GOL::MASK::mask<20, 20, 0, 0>( init, GOL::STRUCTURE::TYPE::BLOCK );
+    // GOL::MASK::mask<20, 20, 3, 3>( init, GOL::STRUCTURE::TYPE::BEEHIVE );
+    // GOL::MASK::mask<20, 20, 0, 8>( init, GOL::STRUCTURE::TYPE::LOAF );
+    // GOL::MASK::mask<20, 20, 9, 3>( init, GOL::STRUCTURE::TYPE::BLINKER_V );
+    // GOL::MASK::mask<20, 20, 9, 9>( init, GOL::STRUCTURE::TYPE::TOAD );
+    // GOL::MASK::mask<20, 20, 0, 14>( init, GOL::STRUCTURE::TYPE::BEACON );
+
+    GOL::MASK::mask<20, 20, 0, 0>( init, GOL::STRUCTURE::TYPE::GLIDER );
+
+    Board<20, 20, boundary::VOID, neighbourhood::MOORE> board{
+        init, std::chrono::milliseconds( 200 )
+    };
+    for ( int i{ 0 }; i < 100; ++i ) {
         std::cout << board << std::endl;
         board.step();
     }
