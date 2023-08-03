@@ -76,7 +76,7 @@ class Board
     }
 
     // Update board
-    constexpr inline void step( const std::uint32_t n = 1 ) noexcept {
+    constexpr inline bool step( const std::uint32_t n = 1 ) noexcept {
         for ( std::uint32_t i{ 0 }; i < n; ++i ) {
             std::array<bool, ( Width + 2 ) * ( Height + 2 )> tmp = m_cells;
             for ( std::uint32_t x{ 0 }; x < Width; ++x ) {
@@ -85,8 +85,12 @@ class Board
                         transform_cell<Neighbourhood>( getn( x, y ) );
                 }
             }
+            if ( tmp == m_cells ) {
+                return false;
+            }
             m_cells = tmp;
         }
+        return true;
     }
 
     [[nodiscard]] inline constexpr auto data() const noexcept {
