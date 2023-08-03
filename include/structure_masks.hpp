@@ -47,6 +47,70 @@ class Object
     }
 };
 
+constexpr static Object<2, 2> BLOCK{ {
+    // clang-format off
+        1, 1,
+        1, 1,
+    // clang-format on
+} };
+
+constexpr static Object<4, 3> BEEHIVE{ {
+    // clang-format off
+    0, 1, 1, 0,
+    1, 0, 0, 1,
+    0, 1, 1, 0
+    // clang-format on
+} };
+
+constexpr static Object<4, 4> LOAF{ {
+    // clang-format off
+    0, 1, 1, 0,
+    1, 0, 0, 1,
+    0, 1, 0, 1,
+    0, 0, 1, 0
+    // clang-format on
+} };
+
+constexpr static Object<3, 1> BLINKER_H{ {
+    // clang-format off
+    1, 1, 1
+    // clang-format on
+} };
+
+constexpr static Object<1, 3> BLINKER_V{ {
+    // clang-format off
+    1,
+    1,
+    1
+    // clang-format on
+} };
+
+constexpr static Object<4, 4> TOAD{ {
+    // clang-format off
+    0, 0, 1, 0,
+    1, 0, 0, 1,
+    1, 0, 0, 1,
+    0, 1, 0, 0
+    // clang-format on
+} };
+
+constexpr static Object<4, 4> BEACON{ {
+    // clang-format off
+    1, 1, 0, 0,
+    1, 0, 0, 0,
+    0, 0, 0, 1,
+    0, 0, 1, 1
+    // clang-format on
+} };
+
+constexpr static Object<3, 3> GLIDER{ {
+    // clang-format off
+    1, 0, 0,
+    0, 1, 1,
+    1, 1, 0
+    // clang-format on
+} };
+
 // Still-life structures
 
 constexpr static int32_t             BLOCK_WIDTH{ 2 }, BLOCK_HEIGHT{ 2 };
