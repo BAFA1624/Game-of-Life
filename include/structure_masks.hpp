@@ -21,7 +21,31 @@ enum class TYPE {
     GLIDER
 };
 
+template <int32_t Width, int32_t Height>
+class Object
+{
+    private:
+    std::array<bool, Width * Height> m_data;
 
+    public:
+    Object() = delete;
+    constexpr Object( const std::array<bool, Width * Height> & arr ) :
+        m_data( arr ) {}
+
+    [[nodiscard]] constexpr inline auto width() const noexcept { return Width; }
+    [[nodiscard]] constexpr inline auto height() const noexcept {
+        return Height;
+    }
+
+    template <int32_t A_Width, int32_t A_Height, int32_t X, int32_t Y>
+    constexpr inline void mask( std::array<bool, A_Width * A_Height> & a ) {
+        for ( int32_t x{ 0 }; x < Width; ++x ) {
+            for ( int32_t y{ 0 }; y < Height; ++y ) {
+                a[Height * ( Y + y ) + ( X + x )] = m_data[Width * y + x];
+            }
+        }
+    }
+};
 
 // Still-life structures
 
