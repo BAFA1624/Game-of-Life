@@ -104,16 +104,24 @@ template <std::int32_t Width, std::int32_t Height,
 std::ostream &
 operator<<( std::ostream &                                        out,
             const Board<Width, Height, Boundary, Neighbourhood> & board ) {
-    std::string b_str{};
+    std::string b_str{ "|" };
+    for ( std::int32_t i{ 0 }; i < Width; ++i ) { b_str += "~ "; }
+    b_str.pop_back();
+    b_str += "|\n";
     for ( std::int32_t j{ 0 }; j < Height; ++j ) {
+        b_str += "|";
         for ( std::int32_t i{ 0 }; i < Width; ++i ) {
             b_str +=
                 ( board.get( i, j ) ? std::string{ "o" } : std::string{ " " } )
                 + " ";
         }
-        b_str += "\n";
+        b_str.pop_back();
+        b_str += "|\n";
     }
-    // b_str.pop_back();
+    b_str += "|";
+    for ( std::int32_t i{ 0 }; i < Width; ++i ) { b_str += "~ "; }
+    b_str.pop_back();
+    b_str += "|\n";
     out << "\033c" << b_str;
     const auto start{ std::chrono::steady_clock::now() };
     while ( std::chrono::duration<double>{ std::chrono::steady_clock::now()
