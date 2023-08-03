@@ -36,12 +36,26 @@ class Object
     [[nodiscard]] constexpr inline auto height() const noexcept {
         return Height;
     }
+    [[nodiscard]] constexpr inline auto data() const noexcept { return m_data; }
+
+    constexpr inline void
+    data( const std::array<bool, Width * Height> & arr ) noexcept {
+        m_data = arr;
+    }
 
     template <int32_t A_Width, int32_t A_Height, int32_t X, int32_t Y>
-    constexpr inline void mask( std::array<bool, A_Width * A_Height> & a ) {
+    constexpr inline void
+    mask( std::array<bool, A_Width * A_Height> & a ) const noexcept {
+        static_assert(
+            A_Width - X >= Width && A_Width - X >= 0 && A_Width - X <= A_Width,
+            "Object x position incompatible object & array dimensions." );
+        static_assert(
+            A_Height - Y >= Height && A_Height - Y >= 0
+                && A_Height - Y <= A_Height,
+            "Object Y position incompatible object & array dimensions." );
         for ( int32_t x{ 0 }; x < Width; ++x ) {
             for ( int32_t y{ 0 }; y < Height; ++y ) {
-                a[Height * ( Y + y ) + ( X + x )] = m_data[Width * y + x];
+                a[A_Width * ( Y + y ) + ( X + x )] = m_data[Width * y + x];
             }
         }
     }
@@ -190,143 +204,33 @@ namespace MASK
 {
 
 template <int32_t Width, int32_t Height, int32_t X, int32_t Y>
-constexpr inline void
-mask_block( std::array<bool, Width * Height> & a ) {
-    assert( Width - X >= STRUCTURE::BLOCK_WIDTH && Width - X >= 0
-            && Width - X <= Width );
-    assert( Height - Y >= STRUCTURE::BLOCK_HEIGHT && Height - Y >= 0
-            && Height - Y <= Height );
-    for ( int32_t x{ 0 }; x < STRUCTURE::BLOCK_WIDTH; ++x ) {
-        for ( int32_t y{ 0 }; y < STRUCTURE::BLOCK_HEIGHT; ++y ) {
-            a[Height * ( Y + y ) + ( X + x )] =
-                STRUCTURE::block[STRUCTURE::BLOCK_WIDTH * y + x];
-        }
-    }
-}
-
-template <int32_t Width, int32_t Height, int32_t X, int32_t Y>
-constexpr inline void
-mask_beehive( std::array<bool, Width * Height> & a ) {
-    assert( Width - X >= STRUCTURE::BEEHIVE_WIDTH && Width - X >= 0
-            && Width - X <= Width );
-    assert( Height - Y >= STRUCTURE::BEEHIVE_HEIGHT && Height - Y >= 0
-            && Height - Y <= Height );
-    for ( int32_t x{ 0 }; x < STRUCTURE::BEEHIVE_WIDTH; ++x ) {
-        for ( int32_t y{ 0 }; y < STRUCTURE::BEEHIVE_HEIGHT; ++y ) {
-            a[Height * ( Y + y ) + ( X + x )] =
-                STRUCTURE::beehive[STRUCTURE::BEEHIVE_WIDTH * y + x];
-        }
-    }
-}
-
-template <int32_t Width, int32_t Height, int32_t X, int32_t Y>
-constexpr inline void
-mask_loaf( std::array<bool, Width * Height> & a ) {
-    assert( Width - X >= STRUCTURE::LOAF_WIDTH && Width - X >= 0
-            && Width - X <= Width );
-    assert( Height - Y >= STRUCTURE::LOAF_HEIGHT && Height - Y >= 0
-            && Height - Y <= Height );
-    for ( int32_t x{ 0 }; x < STRUCTURE::LOAF_WIDTH; ++x ) {
-        for ( int32_t y{ 0 }; y < STRUCTURE::LOAF_HEIGHT; ++y ) {
-            a[Height * ( Y + y ) + ( X + x )] =
-                STRUCTURE::loaf[STRUCTURE::LOAF_WIDTH * y + x];
-        }
-    }
-}
-
-template <int32_t Width, int32_t Height, int32_t X, int32_t Y>
-constexpr inline void
-mask_blinker_h( std::array<bool, Width * Height> & a ) {
-    assert( Width - X >= STRUCTURE::BLINKER_H_WIDTH && Width - X >= 0
-            && Width - X <= Width );
-    assert( Height - Y >= STRUCTURE::BLINKER_H_HEIGHT && Height - Y >= 0
-            && Height - Y <= Height );
-    for ( int32_t x{ 0 }; x < STRUCTURE::BLINKER_H_WIDTH; ++x ) {
-        for ( int32_t y{ 0 }; y < STRUCTURE::BLINKER_H_HEIGHT; ++y ) {
-            a[Height * ( Y + y ) + ( X + x )] =
-                STRUCTURE::blinker_h[STRUCTURE::BLINKER_H_WIDTH * y + x];
-        }
-    }
-}
-
-template <int32_t Width, int32_t Height, int32_t X, int32_t Y>
-constexpr inline void
-mask_blinker_v( std::array<bool, Width * Height> & a ) {
-    assert( Width - X >= STRUCTURE::BLINKER_V_WIDTH && Width - X >= 0
-            && Width - X <= Width );
-    assert( Height - Y >= STRUCTURE::BLINKER_V_HEIGHT && Height - Y >= 0
-            && Height - Y <= Height );
-    for ( int32_t x{ 0 }; x < STRUCTURE::BLINKER_V_WIDTH; ++x ) {
-        for ( int32_t y{ 0 }; y < STRUCTURE::BLINKER_V_HEIGHT; ++y ) {
-            a[Height * ( Y + y ) + ( X + x )] =
-                STRUCTURE::blinker_v[STRUCTURE::BLINKER_V_WIDTH * y + x];
-        }
-    }
-}
-
-template <int32_t Width, int32_t Height, int32_t X, int32_t Y>
-constexpr inline void
-mask_toad( std::array<bool, Width * Height> & a ) {
-    assert( Width - X >= STRUCTURE::TOAD_WIDTH && Width - X >= 0
-            && Width - X <= Width );
-    assert( Height - Y >= STRUCTURE::TOAD_HEIGHT && Height - Y >= 0
-            && Height - Y <= Height );
-    for ( int32_t x{ 0 }; x < STRUCTURE::TOAD_WIDTH; ++x ) {
-        for ( int32_t y{ 0 }; y < STRUCTURE::TOAD_HEIGHT; ++y ) {
-            a[Height * ( Y + y ) + ( X + x )] =
-                STRUCTURE::toad[STRUCTURE::TOAD_WIDTH * y + x];
-        }
-    }
-}
-
-template <int32_t Width, int32_t Height, int32_t X, int32_t Y>
-constexpr inline void
-mask_beacon( std::array<bool, Width * Height> & a ) {
-    assert( Width - X >= STRUCTURE::BEACON_WIDTH && Width - X >= 0
-            && Width - X <= Width );
-    assert( Height - Y >= STRUCTURE::BEACON_HEIGHT && Height - Y >= 0
-            && Height - Y <= Height );
-    for ( int32_t x{ 0 }; x < STRUCTURE::BEACON_WIDTH; ++x ) {
-        for ( int32_t y{ 0 }; y < STRUCTURE::BEACON_HEIGHT; ++y ) {
-            a[Height * ( Y + y ) + ( X + x )] =
-                STRUCTURE::beacon[STRUCTURE::BEACON_WIDTH * y + x];
-        }
-    }
-}
-
-template <int32_t Width, int32_t Height, int32_t X, int32_t Y>
-constexpr inline void
-mask_glider( std::array<bool, Width * Height> & a ) {
-    assert( Width - X >= STRUCTURE::GLIDER_WIDTH && Width - X >= 0
-            && Width - X <= Width );
-    assert( Height - Y >= STRUCTURE::GLIDER_HEIGHT && Height - Y >= 0
-            && Height - Y <= Height );
-    for ( int32_t x{ 0 }; x < STRUCTURE::GLIDER_WIDTH; ++x ) {
-        for ( int32_t y{ 0 }; y < STRUCTURE::GLIDER_HEIGHT; ++y ) {
-            a[Height * ( Y + y ) + ( X + x )] =
-                STRUCTURE::glider[STRUCTURE::GLIDER_WIDTH * y + x];
-        }
-    }
-}
-
-template <int32_t Width, int32_t Height, int32_t X, int32_t Y>
 constexpr inline std::array<bool, Width * Height>
 mask( std::array<bool, Width * Height> & a, const STRUCTURE::TYPE type ) {
     switch ( type ) {
-    case STRUCTURE::TYPE::BLOCK: mask_block<Width, Height, X, Y>( a ); break;
-    case STRUCTURE::TYPE::BEEHIVE:
-        mask_beehive<Width, Height, X, Y>( a );
+    case STRUCTURE::TYPE::BLOCK:
+        STRUCTURE::BLOCK.mask<Width, Height, X, Y>( a );
         break;
-    case STRUCTURE::TYPE::LOAF: mask_loaf<Width, Height, X, Y>( a ); break;
+    case STRUCTURE::TYPE::BEEHIVE:
+        STRUCTURE::BEEHIVE.mask<Width, Height, X, Y>( a );
+        break;
+    case STRUCTURE::TYPE::LOAF:
+        STRUCTURE::LOAF.mask<Width, Height, X, Y>( a );
+        break;
     case STRUCTURE::TYPE::BLINKER_H:
-        mask_blinker_h<Width, Height, X, Y>( a );
+        STRUCTURE::BLINKER_H.mask<Width, Height, X, Y>( a );
         break;
     case STRUCTURE::TYPE::BLINKER_V:
-        mask_blinker_v<Width, Height, X, Y>( a );
+        STRUCTURE::BLINKER_V.mask<Width, Height, X, Y>( a );
         break;
-    case STRUCTURE::TYPE::TOAD: mask_toad<Width, Height, X, Y>( a ); break;
-    case STRUCTURE::TYPE::BEACON: mask_beacon<Width, Height, X, Y>( a ); break;
-    case STRUCTURE::TYPE::GLIDER: mask_glider<Width, Height, X, Y>( a ); break;
+    case STRUCTURE::TYPE::TOAD:
+        STRUCTURE::TOAD.mask<Width, Height, X, Y>( a );
+        break;
+    case STRUCTURE::TYPE::BEACON:
+        STRUCTURE::BEACON.mask<Width, Height, X, Y>( a );
+        break;
+    case STRUCTURE::TYPE::GLIDER:
+        STRUCTURE::GLIDER.mask<Width, Height, X, Y>( a );
+        break;
     }
     return a;
 }
