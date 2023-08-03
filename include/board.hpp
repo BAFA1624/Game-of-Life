@@ -1,13 +1,19 @@
 #pragma once
 
+// clang-format off
 #include "rules.hpp"
+#include "rules.cpp"
+// clang-format on
 
 #include <array>
 #include <cassert>
+#include <chrono>
 #include <cstdint>
 #include <iostream>
 #include <string>
 #include <vector>
+
+
 
 template <std::int32_t Width, std::int32_t Height,
           boundary      Boundary = boundary::VOID,
@@ -17,16 +23,23 @@ class Board
     private:
     std::array<bool, ( Width + 2 ) * ( Height + 2 )> m_cells;
 
+    std::chrono::duration<double> m_ms_delay;
+
     [[nodiscard]] inline constexpr auto
     raw_idx( const std::int32_t x, const std::int32_t y ) const noexcept {
         return ( Width + 2 ) * ( y + 1 ) + ( x + 1 );
     }
 
     public:
-    Board() : m_cells( std::array<bool, ( Width + 2 ) * ( Height + 2 )>{} ) {
+    Board() :
+        m_cells( std::array<bool, ( Width + 2 ) * ( Height + 2 )>{} ),
+        m_ms_delay( std::chrono::milliseconds( 200 ) ) {
         m_cells.fill( static_cast<bool>( Boundary ) );
     }
-    Board( const std::array<bool, Width * Height> & state ) : m_cells() {
+    Board( const std::array<bool, Width * Height> &        state,
+           const std::chrono::duration<double, std::milli> ms_delay =
+               std::chrono::milliseconds( 200 ) ) :
+        m_cells(), m_ms_delay( ms_delay ) {
         // Set boundary by filling entire board
         m_cells = std::array<bool, ( Width + 2 ) * ( Height + 2 )>{};
         m_cells.fill( static_cast<bool>( Boundary ) );
@@ -79,6 +92,10 @@ class Board
     [[nodiscard]] inline constexpr auto data() const noexcept {
         return m_cells;
     }
+
+    [[nodiscard]] inline constexpr auto ms_delay() const noexcept {
+        return m_ms_delay;
+    }
 };
 
 template <std::int32_t Width, std::int32_t Height,
@@ -90,12 +107,20 @@ operator<<( std::ostream &                                        out,
     std::string b_str{};
     for ( std::int32_t j{ 0 }; j < Height; ++j ) {
         for ( std::int32_t i{ 0 }; i < Width; ++i ) {
-            b_str += std::to_string( board.get( i, j ) ) + " ";
+            b_str +=
+                ( board.get( i, j ) ? std::string{ "o" } : std::string{ " " } )
+                + " ";
         }
         b_str += "\n";
     }
     // b_str.pop_back();
-    out << b_str;
+    out << "\033c" << b_str;
+    const auto start{ std::chrono::steady_clock::now() };
+    while ( std::chrono::duration<double>{ std::chrono::steady_clock::now()
+                                           - start }
+            < board.ms_delay() ) {
+        continue;
+    }
     return out;
 }
 
