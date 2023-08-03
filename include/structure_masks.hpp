@@ -61,6 +61,8 @@ class Object
     }
 };
 
+// Still-life structures
+
 constexpr static Object<2, 2> BLOCK{ {
     // clang-format off
         1, 1,
@@ -84,6 +86,8 @@ constexpr static Object<4, 4> LOAF{ {
     0, 0, 1, 0
     // clang-format on
 } };
+
+// Oscillator structures
 
 constexpr static Object<3, 1> BLINKER_H{ {
     // clang-format off
@@ -117,6 +121,8 @@ constexpr static Object<4, 4> BEACON{ {
     // clang-format on
 } };
 
+// Spaceship structures
+
 constexpr static Object<3, 3> GLIDER{ {
     // clang-format off
     1, 0, 0,
@@ -124,79 +130,6 @@ constexpr static Object<3, 3> GLIDER{ {
     1, 1, 0
     // clang-format on
 } };
-
-// Still-life structures
-
-constexpr static int32_t             BLOCK_WIDTH{ 2 }, BLOCK_HEIGHT{ 2 };
-constexpr static std::array<bool, 4> block{
-    // clang-format off
-    1, 1,
-    1, 1
-    // clang-format on
-};
-
-
-
-constexpr static int32_t              BEEHIVE_WIDTH{ 4 }, BEEHIVE_HEIGHT{ 3 };
-constexpr static std::array<bool, 12> beehive{
-    // clang-format off
-    0, 1, 1, 0,
-    1, 0, 0, 1,
-    0, 1, 1, 0
-    // clang-format on
-};
-
-constexpr static int32_t              LOAF_WIDTH{ 4 }, LOAF_HEIGHT{ 4 };
-constexpr static std::array<bool, 16> loaf{
-    // clang-format off
-    0, 1, 1, 0,
-    1, 0, 0, 1,
-    0, 1, 0, 1,
-    0, 0, 1, 0
-    // clang-format on
-};
-
-// Oscillator structures
-
-constexpr static int32_t BLINKER_H_WIDTH{ 3 }, BLINKER_H_HEIGHT{ 1 };
-constexpr static std::array<bool, 3> blinker_h{
-    // clang-format off
-    1, 1, 1
-    // clang-format on
-};
-constexpr static int32_t BLINKER_V_WIDTH{ 1 }, BLINKER_V_HEIGHT{ 3 };
-constexpr static std::array<bool, 3> blinker_v{ blinker_h };
-
-constexpr static int32_t              TOAD_WIDTH{ 4 }, TOAD_HEIGHT{ 4 };
-constexpr static std::array<bool, 16> toad{
-    // clang-format off
-    0, 0, 1, 0,
-    1, 0, 0, 1,
-    1, 0, 0, 1,
-    0, 1, 0, 0
-    // clang-format on
-};
-
-constexpr static int32_t              BEACON_WIDTH{ 4 }, BEACON_HEIGHT{ 4 };
-constexpr static std::array<bool, 20> beacon{
-    // clang-format off
-    1, 1, 0, 0,
-    1, 0, 0, 0,
-    0, 0, 0, 1,
-    0, 0, 1, 1
-    // clang-format on
-};
-
-// Spaceship structures
-
-constexpr static int32_t             GLIDER_WIDTH{ 3 }, GLIDER_HEIGHT{ 3 };
-constexpr static std::array<bool, 9> glider{
-    // clang-format off
-    1, 0, 0,
-    0, 1, 1,
-    1, 1, 0
-    // clang-format on
-};
 
 }; // namespace STRUCTURE
 
