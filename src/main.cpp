@@ -47,24 +47,31 @@ main() {
     //    0, 0, 0, 0, 0, 0, 0, 0
     //};
 
-    std::array<bool, 400> init { false };
+#define WIDTH 50
+#define HEIGHT 50
+
+    std::array<bool, WIDTH * HEIGHT> init { false };
     // clang-format on
 
-    // GOL::MASK::mask<20, 20, 0, 0>( init, GOL::STRUCTURE::TYPE::BLOCK );
-    // GOL::MASK::mask<20, 20, 3, 3>( init, GOL::STRUCTURE::TYPE::BEEHIVE );
-    // GOL::MASK::mask<20, 20, 0, 8>( init, GOL::STRUCTURE::TYPE::LOAF );
-    // GOL::MASK::mask<20, 20, 9, 3>( init, GOL::STRUCTURE::TYPE::BLINKER_V );
-    // GOL::MASK::mask<20, 20, 9, 9>( init, GOL::STRUCTURE::TYPE::TOAD );
-    // GOL::MASK::mask<20, 20, 0, 14>( init, GOL::STRUCTURE::TYPE::BEACON );
+    GOL::MASK::mask<WIDTH, HEIGHT, 0, 0>( init, GOL::STRUCTURE::TYPE::BLOCK );
+    GOL::MASK::mask<WIDTH, HEIGHT, 3, 3>( init, GOL::STRUCTURE::TYPE::BEEHIVE );
+    GOL::MASK::mask<WIDTH, HEIGHT, 0, 8>( init, GOL::STRUCTURE::TYPE::LOAF );
+    GOL::MASK::mask<WIDTH, HEIGHT, 9, 3>( init,
+                                          GOL::STRUCTURE::TYPE::BLINKER_V );
+    GOL::MASK::mask<WIDTH, HEIGHT, 9, 9>( init, GOL::STRUCTURE::TYPE::TOAD );
+    GOL::MASK::mask<WIDTH, HEIGHT, 0, 14>( init, GOL::STRUCTURE::TYPE::BEACON );
 
-    GOL::MASK::mask<20, 20, 0, 0>( init, GOL::STRUCTURE::TYPE::GLIDER );
+    // GOL::MASK::mask<WIDTH, HEIGHT, 0, 0>( init, GOL::STRUCTURE::TYPE::GLIDER
+    // ); GOL::MASK::mask<WIDTH, HEIGHT, 10, 10>( init,
+    //                                         GOL::STRUCTURE::TYPE::GLIDER );
+    GOL::MASK::mask<WIDTH, HEIGHT, 10, 25>( init,
+                                            GOL::STRUCTURE::TYPE::GLIDER );
+    // GOL::MASK::mask<WIDTH, HEIGHT, 40, 40>( init,
+    //                                         GOL::STRUCTURE::TYPE::GLIDER );
 
-    Board<20, 20, boundary::VOID, neighbourhood::MOORE> board{
-        init, std::chrono::milliseconds( 200 )
+    Board<WIDTH, HEIGHT, boundary::VOID, neighbourhood::MOORE> board{
+        init, std::chrono::milliseconds( 100 )
     };
-    for ( int i{ 0 }; i < 100; ++i ) {
-        std::cout << board << std::endl;
-        board.step();
-    }
+    while ( board.step() ) { std::cout << board << std::endl; }
     std::cout << board << std::endl;
 }
