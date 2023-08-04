@@ -72,6 +72,9 @@ main() {
     Board<WIDTH, HEIGHT, boundary::VOID, neighbourhood::MOORE> board{
         init, std::chrono::milliseconds( 100 )
     };
-    while ( board.step() ) { std::cout << board << std::endl; }
+
+    for ( std::int32_t i{ 0 }; i < 500 && board.step(); ++i ) {
+        std::cout << board << std::endl;
+    }
     std::cout << board << std::endl;
 }
